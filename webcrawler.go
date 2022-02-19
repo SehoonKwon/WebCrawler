@@ -4,7 +4,7 @@ package main
 
 import (
 	_ "bufio"
-	_ "fmt"
+	"fmt"
 	"net/http"
 	_ "os"
 	_ "strings"
@@ -19,10 +19,9 @@ import (
 const urlRoot = "http://ruliweb.com"
 
 //	"github.com/yhat/scrape" 예제 참고
-// a 태그이면서 부모가 nil이 아닌경우 부모 클래스가 row인 것을 scrape
 func parseMainNodes(n *html.Node) bool {
-	if n.DataAtom == atom.A && n.Parent != nil {
-		return scrape.Attr(n.Parent, "class") == "row"
+	if n.DataAtom == atom.A && n.Parent != nil { //a 태그이면서 부모가 nil이 아닌경우
+		return scrape.Attr(n.Parent, "class") == "row" //  부모 클래스가 row인 것을 scrape
 	}
 	return false
 }
@@ -52,4 +51,9 @@ func main() {
 
 	//Parse Main Nodes 메소드 스크래핑 대상 URL 추출(게임별 세부 URL)
 	urlList := scrape.FindAll(root, parseMainNodes)
+
+	for idx, link := range urlList {
+		//대상 url 1차 출력
+		fmt.Println(link, idx)
+	}
 }
