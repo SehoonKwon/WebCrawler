@@ -3,9 +3,10 @@
 package main
 
 import (
-	_ "bufio"
+	"bufio"
+	"fmt"
 	"net/http"
-	_ "os"
+	"os"
 	"strings"
 	"sync"
 
@@ -37,7 +38,46 @@ var wg sync.WaitGroup
 
 //URL 대상이 되는 페이지(서브페이지) 대상으로 원하는 내용을 파싱 후 반환
 func scrapContents(url string, fn string) {
+	//작업 종료 알림
+	defer wg.Done()
 
+	//Get 요청
+	rep, err := http.Get(url)
+	errcheck(err)
+
+	//요청 body 닫기
+	defer rep.Body.Close()
+
+	//응답 데이터(HTML)
+	root, err := html.Parse(rep.Body)
+	errcheck(err)
+
+	//Reponse 데이터 원하는 부분 파싱
+	matchNode := func(n *html.Node) bool {
+		return n.DataAtom == atom.A && scrape.Attr(n, "class") == "deco"
+	}
+
+	//파일 스크림 생성(열기) -> 파일명, 옵션, 권한
+	scrapFolder := "C:\\Users\\Sehoon\\go\\src\\github.com\\SehoonKwon\\WebCrawler\\scrape"
+	file, err := os.OpenFile(scrapFolder+fn+".txt", os.O_CREATE|os.O_RDWR, os.FileMode(0777))
+	errcheck(err)
+
+	//메소드 종료시 파일 닫기
+	defer file.Close()
+
+	//쓰기 버퍼 선언
+	w := bufio.NewWriter(file)
+
+	//matchNode 메소드를 사용해 원하는 노드 순회하면서 출력
+	for _, g := range scrape.FindAll(root, matchNode) {
+		//url 및 해당 데이터 출력
+		fmt.Println(scrape.Text(g))
+
+		//파싱 데이터 버퍼에 기록
+		w.WriteString(scrape.Text(g) + "\r\n")
+	}
+
+	w.Flush()
 }
 
 func main() {
