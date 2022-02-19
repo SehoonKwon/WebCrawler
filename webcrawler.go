@@ -51,5 +51,5 @@ func main() {
 	errcheck(err)
 
 	//Parse Main Nodes 메소드 스크래핑 대상 URL 추출(게임별 세부 URL)
-	urlList := scrape.FindAll(rot, pase)
+	urlList := scrape.FindAll(root, parseMainNodes)
 }
