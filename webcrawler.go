@@ -52,8 +52,10 @@ func main() {
 	//Parse Main Nodes 메소드 스크래핑 대상 URL 추출(게임별 세부 URL)
 	urlList := scrape.FindAll(root, parseMainNodes)
 
-	for idx, link := range urlList {
+	for _, link := range urlList {
 		//대상 url 1차 출력
-		fmt.Println(link, idx)
+		//fmt.Println(link, idx)
+
+		fmt.Println("Target :", scrape.Attr(link, "href"))
 	}
 }
