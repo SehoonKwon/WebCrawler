@@ -4,7 +4,6 @@ package main
 
 import (
 	_ "bufio"
-	"fmt"
 	"net/http"
 	_ "os"
 	"strings"
@@ -36,6 +35,11 @@ func errcheck(err error) {
 //동기화를 위한 작업 그룹 선언
 var wg sync.WaitGroup
 
+//URL 대상이 되는 페이지(서브페이지) 대상으로 원하는 내용을 파싱 후 반환
+func scrapContents(url string, fn string) {
+
+}
+
 func main() {
 
 	//메인 페이지 GET 요청
@@ -58,6 +62,15 @@ func main() {
 
 		//fmt.Println("Target :", scrape.Attr(link, "href"))
 		fileName := strings.Replace(scrape.Attr(link, "href"), "https://bbs.ruliweb.com/family/", "", 1) //scrape 한 문자열의 해당부분을 ""로 치환해라. 1번만
-		fmt.Println(fileName)
+		//fmt.Println(fileName)
+
+		//작업 대기열에 추가
+		wg.Add(1) //Done 개수와 일치
+
+		//고루틴 시작 -> 작업 대기열 개수와 같아야 함
+
 	}
+
+	//모든 작업이 끝날때까지 대기
+	wg.Wait()
 }
