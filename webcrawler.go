@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	_ "os"
-	_ "strings"
+	"strings"
 	"sync"
 
 	"github.com/yhat/scrape"
@@ -56,6 +56,8 @@ func main() {
 		//대상 url 1차 출력
 		//fmt.Println(link, idx)
 
-		fmt.Println("Target :", scrape.Attr(link, "href"))
+		//fmt.Println("Target :", scrape.Attr(link, "href"))
+		fileName := strings.Replace(scrape.Attr(link, "href"), "https://bbs.ruliweb.com/family/", "", 1) //scrape 한 문자열의 해당부분을 ""로 치환해라. 1번만
+		fmt.Println(fileName)
 	}
 }
