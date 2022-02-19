@@ -4,7 +4,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -58,7 +57,7 @@ func scrapContents(url string, fn string) {
 	}
 
 	//파일 스크림 생성(열기) -> 파일명, 옵션, 권한
-	scrapFolder := "C:\\Users\\Sehoon\\go\\src\\github.com\\SehoonKwon\\WebCrawler\\scrape"
+	scrapFolder := "C:\\Users\\Sehoon\\go\\src\\github.com\\SehoonKwon\\WebCrawler\\scrape\\"
 	file, err := os.OpenFile(scrapFolder+fn+".txt", os.O_CREATE|os.O_RDWR, os.FileMode(0777))
 	errcheck(err)
 
@@ -71,7 +70,7 @@ func scrapContents(url string, fn string) {
 	//matchNode 메소드를 사용해 원하는 노드 순회하면서 출력
 	for _, g := range scrape.FindAll(root, matchNode) {
 		//url 및 해당 데이터 출력
-		fmt.Println(scrape.Text(g))
+		//	fmt.Println(scrape.Text(g))
 
 		//파싱 데이터 버퍼에 기록
 		w.WriteString(scrape.Text(g) + "\r\n")
@@ -108,7 +107,7 @@ func main() {
 		wg.Add(1) //Done 개수와 일치
 
 		//고루틴 시작 -> 작업 대기열 개수와 같아야 함
-
+		go scrapContents(scrape.Attr(link, "href"), fileName)
 	}
 
 	//모든 작업이 끝날때까지 대기
