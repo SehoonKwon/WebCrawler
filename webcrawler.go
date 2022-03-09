@@ -82,7 +82,7 @@ func scrapContents(url string, fn string) {
 	w.Flush()
 }
 
-func main() {
+func webcrawler() {
 
 	//메인 페이지 GET 요청
 	resp, err := http.Get(urlRoot)
