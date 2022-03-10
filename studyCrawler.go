@@ -69,11 +69,13 @@ func main() {
 		})
 	*/
 
-	fmt.Println(vaccination)
-	fmt.Println(percentList)
-	fmt.Println(personCnt)
+	for i := 0; i < 3; i++ {
+		fmt.Println("[" + vaccination[i] + "]")
+		fmt.Println("접종률 : " + percentList[i])
+		fmt.Println("누적 접종인원 : " + personCnt[i*2][6:] + " 명") //6번째 요소이후로 출력(한글이라 많은 인덱스 차지)
+	}
 
 	//일일 확진현황
 	occurStatus := doc.Find("div.occurrenceStatus tbody td").Eq(3).Text()
-	fmt.Println("신규확진자 수 :", occurStatus)
+	fmt.Print("[신규확진자 수]\n", occurStatus) //공백 안쓰기 위해 Print로 출력
 }
