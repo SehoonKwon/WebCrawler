@@ -1,7 +1,8 @@
 /*
 대상 웹 사이트 : 정부 코로나 현황
 기능:	1. 뉴스, 보도자료 링크 및 텍스트 파싱 연습
-		2. 예방접종현황 파싱 (ing)
+		2. 예방접종현황 파싱
+		3. 일일 확진자 수 파싱 추가
 */
 package main
 
@@ -71,4 +72,8 @@ func main() {
 	fmt.Println(vaccination)
 	fmt.Println(percentList)
 	fmt.Println(personCnt)
+
+	//일일 확진현황
+	occurStatus := doc.Find("div.occurrenceStatus tbody td").Eq(3).Text()
+	fmt.Println("신규확진자 수 :", occurStatus)
 }
